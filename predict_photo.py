@@ -1,6 +1,6 @@
 from ultralytics import YOLO
 
-model = YOLO(r'runs\detect\yolov8n_custom\weights\best.pt')
+model = YOLO(r'runs\detect\yolov8n_custom2\weights\best.pt')
 
 if __name__ == '__main__':
     # Predict.
