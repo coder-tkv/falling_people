@@ -5,7 +5,7 @@ CONFIDENCE_THRESHOLD = 0.6
 BLUE = (255, 0, 0)
 
 video_cap = cv2.VideoCapture(0)
-model = YOLO(r'runs\detect\yolov8n_custom2\weights\best.pt')
+model = YOLO(r'runs\detect\yolov8n_custom3\weights\best.pt')
 
 while True:
     ret, frame = video_cap.read()
