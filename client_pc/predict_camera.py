@@ -1,20 +1,47 @@
+import time
 from ultralytics import YOLO
 import cv2
 
 CONFIDENCE_THRESHOLD = 0.6
 BLUE = (255, 0, 0)
+falling_people_counter = 0
+not_falling_people_counter = 0
+max_errors = 3
+timer = None
+is_falling = False
 
 video_cap = cv2.VideoCapture(0)
 model = YOLO(r'runs/detect/yolov8n_custom3/weights/best.pt')
 
+
 while True:
     ret, frame = video_cap.read()
-    width = 1500
-    height = 1080
+    width = 1280
+    height = 720
     dim = (width, height)
 
     frame = cv2.resize(frame, dim, interpolation=cv2.INTER_AREA)
-    detections = model(frame)[0]
+    detections = model(frame, verbose=False)[0]
+    if detections:
+        falling_people_counter += 1
+        if not timer:
+            timer = time.time()
+    else:
+        not_falling_people_counter += 1
+
+    if not_falling_people_counter >= max_errors:
+        not_falling_people_counter = 0
+        falling_people_counter = 0
+        timer = None
+        if is_falling:
+            print('FALLING PEOPLE UNDETECTED!')
+        is_falling = False
+
+    if timer:
+        if time.time() > timer + 5.0:
+            if not is_falling:
+                print('FALLING PEOPLE DETECTED!')
+            is_falling = True
     for data in detections.boxes.data.tolist():
         confidence = data[4]
 
