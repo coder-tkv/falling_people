@@ -1,10 +1,16 @@
 import socket
+import time
 from threading import Thread
 import pickle
+import OPi.GPIO as GPIO
 
-SERVER_HOST = 'localhost'
+SERVER_HOST = '192.168.138.164'
 SERVER_PORT = 4578
 NAME = 'client_robot'
+IN1 = 'PH3'
+IN2 = 'PH4'
+IN3 = 'PH5'
+IN4 = 'PH6'
 
 
 class Client:
@@ -32,6 +38,13 @@ class Client:
                 x = pickle_dec[2][0]
                 y = pickle_dec[2][1]
                 print(f'Falling people detected! Got the coordinates: {x}, {y}')
+                self.forward()
+                time.sleep(3)
+                self.left()
+                time.sleep(0.3)
+                self.forward()
+                time.sleep(3)
+                self.stop()
             if pickle_dec[0] == 'SEND_UNDETECTED':
                 print('Falling people undetected!')
 
@@ -39,6 +52,42 @@ class Client:
         payload = pickle.dumps(data_list)
         self.client.send(payload)
 
+    def forward(self):
+        GPIO.output(IN1, GPIO.LOW)
+        GPIO.output(IN2, GPIO.HIGH)
+        GPIO.output(IN3, GPIO.LOW)
+        GPIO.output(IN4, GPIO.HIGH)
+
+    def back(self):
+        GPIO.output(IN1, GPIO.HIGH)
+        GPIO.output(IN2, GPIO.LOW)
+        GPIO.output(IN3, GPIO.HIGH)
+        GPIO.output(IN4, GPIO.LOW)
+
+    def left(self):
+        GPIO.output(IN1, GPIO.LOW)
+        GPIO.output(IN2, GPIO.HIGH)
+        GPIO.output(IN3, GPIO.HIGH)
+        GPIO.output(IN4, GPIO.LOW)
+
+    def right(self):
+        GPIO.output(IN1, GPIO.HIGH)
+        GPIO.output(IN2, GPIO.LOW)
+        GPIO.output(IN3, GPIO.LOW)
+        GPIO.output(IN4, GPIO.HIGH)
+
+    def stop(self):
+        GPIO.output(IN1, GPIO.LOW)
+        GPIO.output(IN2, GPIO.LOW)
+        GPIO.output(IN3, GPIO.LOW)
+        GPIO.output(IN4, GPIO.LOW)
+
 
 if __name__ == '__main__':
+    GPIO.setmode(GPIO.SUNXI)
+    GPIO.setwarnings(False)
+    GPIO.setup(IN1, GPIO.OUT)
+    GPIO.setup(IN2, GPIO.OUT)
+    GPIO.setup(IN3, GPIO.OUT)
+    GPIO.setup(IN4, GPIO.OUT)
     client = Client(SERVER_HOST, SERVER_PORT, NAME)
