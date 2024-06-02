@@ -4,7 +4,7 @@ from threading import Thread
 import pickle
 import OPi.GPIO as GPIO
 
-SERVER_HOST = '192.168.138.164'
+SERVER_HOST = '192.168.235.164'
 SERVER_PORT = 4578
 NAME = 'client_robot'
 IN1 = 'PH3'

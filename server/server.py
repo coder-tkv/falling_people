@@ -2,7 +2,7 @@ import socket
 from threading import Thread
 import pickle
 
-SERVER_HOST = '192.168.138.164'
+SERVER_HOST = '192.168.235.164'
 SERVER_PORT = 4578
 
 
