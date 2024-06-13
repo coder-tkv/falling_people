@@ -5,10 +5,11 @@ import cv2
 import time
 from ultralytics import YOLO
 
-SERVER_HOST = '192.168.235.164'
+SERVER_HOST = '192.168.98.164'
 SERVER_PORT = 4578
 NAME = 'client_pc'
 CONFIDENCE_THRESHOLD = 0.6
+CAPTURE_DEVICE = 0
 BLUE = (255, 0, 0)
 
 
@@ -38,7 +39,7 @@ class Client:
         timer = None
         is_falling = False
 
-        video_cap = cv2.VideoCapture(0)
+        video_cap = cv2.VideoCapture(CAPTURE_DEVICE)
         model = YOLO(r'runs/detect/yolov8n_custom3/weights/best.pt')
 
         while True:
