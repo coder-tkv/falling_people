@@ -5,10 +5,11 @@ import cv2
 import time
 from ultralytics import YOLO
 
-SERVER_HOST = '192.168.98.164'
+SERVER_HOST = ('local'
+               'host')
 SERVER_PORT = 4578
 NAME = 'client_pc'
-CONFIDENCE_THRESHOLD = 0.6
+CONFIDENCE_THRESHOLD = 0.7
 CAPTURE_DEVICE = 0
 BLUE = (255, 0, 0)
 
@@ -89,6 +90,7 @@ class Client:
                     cv2.putText(frame, class_id + ' ' + str(round(confidence, 2)) + '%', (xmin, ymin + 23),
                                 cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
+            # imS = cv2.resize(frame, (960, 540))
             cv2.imshow("Frame", frame)
             if cv2.waitKey(1) == ord("q"):
                 break
